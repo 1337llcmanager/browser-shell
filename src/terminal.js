@@ -1,11 +1,11 @@
 'use strict';
 
-const { Terminal } = require('xterm');
-const fit = require('xterm/lib/addons/fit/fit');
-Terminal.applyAddon(fit);
+import { Terminal } from './xterm.min.js';
+import { Fit } from './xterm-addon-fit.min.js';
+Terminal.applyAddon(Fit);
 
-const { molokaiTheme } = require('./config');
-const vm = require('./vm');
+import { molokaiTheme } from './config.js';
+import { boot as vmBoot, resume as vmResume, suspend as vmSuspend } from './vm.js';
 
 function createTerm() {
   const term = (window.term = new Terminal({ theme: molokaiTheme }));
@@ -14,10 +14,10 @@ function createTerm() {
   return term;
 }
 
-function start() {
+export function start() {
   window.addEventListener('DOMContentLoaded', () => {
     const term = createTerm();
-    vm.boot(term);
+    vmBoot(term);
 
     // Whether or not the button is active or disabled (has .inactive class)
     function isInactive(elem) {
@@ -29,7 +29,7 @@ function start() {
       e.preventDefault();
       if(isInactive(e.target)) return;
 
-      vm.resume();
+      vmResume();
       term.focus();
     };
 
@@ -38,9 +38,7 @@ function start() {
       e.preventDefault();
       if(isInactive(e.target)) return;
 
-      vm.suspend();
+      vmSuspend();
     };
   });
 }
-
-module.exports.start = start;
