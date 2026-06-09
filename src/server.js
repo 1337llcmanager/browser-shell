@@ -1,9 +1,9 @@
 'use strict';
 
-const { Workbox } = require('workbox-window');
-const browser = require('./browser');
-const { fsRoot } = require('./config');
-const filesystem = require('./filesystem');
+import { Workbox } from './workbox-window.min.js';
+import { start as startBrowser } from './browser.js';
+import { fsRoot } from './config.js';
+import { install as installFilesystem } from './filesystem.js';
 
 /**
  * Parcel doesn't like relative links to routes in a service worker.
@@ -29,7 +29,7 @@ function fixFsUrls() {
 /**
  * Register the nohost service worker, passing `route`
  */
-function start() {
+export function start() {
   if(!('serviceWorker' in navigator)) {
     console.log('[nohost] unable to initialize service worker: not supported.');
     return;
@@ -41,18 +41,16 @@ function start() {
   // Wait on the server to be fully ready to handle routing requests
   wb.controlling.then(() => {
     fixFsUrls();
-    browser.start();
+    startBrowser();
   });
 
   // Deal with first-run install, if necessary
   wb.addEventListener('installed', (event) => {
     if(!event.isUpdate) {
-      filesystem.install();
+      installFilesystem();
     }
   });
   
   // Register the service worker after event listeners have been added.
   wb.register();
 }
-
-module.exports.start = start;
