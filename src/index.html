@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="a Linux VM mounting a JS filesystem with a Service Worker web server.">
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="../node_modules/xterm/dist/xterm.css">
+    <link rel="stylesheet" href="xterm.css">
     <link href="./favicon.ico" rel="icon" type="image/x-icon">
 </head>
 <body>
@@ -181,14 +181,14 @@
             that I've <a href="https://github.com/humphd/v86/tree/filer-9p-lastknowngood">modified for the task</a>.  My v86 virtualized hardware is much like any number of old Linux
             boxes I've used since the mid-90s:
         </p>
-            
+             
         <ul>
             <li>x86 Pentium I</li>
             <li>32M RAM</li>
             <li>CD-ROM Drive (I load and boot my VM as an ISO)</li>
             <li>Serial port connected to my terminal (I'm using <a href="https://xtermjs.org/">xtermjs</a>)</li>
         </ul>
-        
+         
         <h3>Kernel I/O Support</h3>
 
         <p>
@@ -236,7 +236,7 @@
             directory.  I have no doubt that if you press hard enough on the Linux terminal above, you'll likely uncover bugs,
             which you can <a href="https://github.com/humphd/browser-shell/issues/new">file if you like</a>.
         </p>
-        
+         
         <h3>Operating System</h3>
 
         <p>
@@ -261,7 +261,7 @@
             After a bunch of research, I ended up deciding to use <a href="https://buildroot.org/">Buildroot</a> to create an &quot;embedded&quot;
             Linux distro.  Most people use Buildroot to create a custom Linux kernel and OS config for small,
             on-board computers (e.g., a BeagleBoard) that get loaded via SD card.  In my case, I needed my OS to run in a similarly
-            constrained environment (i.e., v86 and the browser).  The parallels were close enough, so I dove in. 
+            constrained environment (i.e., v86 and the browser).  The parallels were close enough, so I dive in. 
         </p>
 
         <img class="full-width-img" src="../screenshots/buildroot-menuconfig.png" alt="Buildroot Menu Config">
@@ -374,6 +374,6 @@
             <em>David Humphrey (<a href="https://twitter.com/humphd">@humphd</a>), April 2019.</em>
         </p>
     </main>
-    <script src="./index.js"></script>
+    <script type="module" src="./index.js"></script>
 </body>
 </html>
