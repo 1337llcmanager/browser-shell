@@ -1,9 +1,15 @@
 'use strict';
 
-const filesystem = require('./filesystem');
-const { V86Starter } = require('v86');
-const { defaultEmulatorOptions } = require('./config');
-const cache = require('./cache');
+import * as filesystem from './filesystem.js';
+import { defaultEmulatorOptions } from './config.js';
+import * as cache from './cache.js';
+
+// Import v86 - assumes it's available globally
+const V86Starter = typeof window.V86Starter !== 'undefined' ? window.V86Starter : null;
+
+if (!V86Starter) {
+  console.error('V86 library not loaded. Please ensure v86 is available globally.');
+}
 
 // What our shell prompt looks like, so we can wait on it.
 const prompt = '/ # ';
@@ -19,7 +25,7 @@ const getVMStartOptions = () => {
 
 let emulator = null;
 
-module.exports.boot = async term => {
+export const boot = async term => {
   if (emulator) {
     return;
   }  
@@ -43,7 +49,7 @@ module.exports.boot = async term => {
 };
 
 // Pause the running VM
-const suspend = module.exports.suspend = () => {
+export const suspend = () => {
   updatePowerUI(false);
 
   if (!(emulator && emulator.is_running())) {
@@ -54,7 +60,7 @@ const suspend = module.exports.suspend = () => {
 };
 
 // Restart the paused VM
-const resume = module.exports.resume = () => {
+export const resume = () => {
   updatePowerUI(true);
 
   if (!(emulator && !emulator.is_running())) {

@@ -1,21 +1,21 @@
 'use strict';
 
-const { vmStateCache, stateUrl } = require('./config');
+import { vmStateCache, stateUrl } from './config.js';
 
 const getVMStateUrl = () => new URL(stateUrl, window.location);
 
 // See if we have a cached VM machine state to restart from a previous boot.
-const getState = () =>
+export const getState = () =>
   caches
     .open(vmStateCache)
     .then(cache => cache.match(getVMStateUrl()));
 
 // Boolean check for whether we have state in the cache
-const hasState = () =>
+export const hasState = () =>
   getState().then(response => !!response);
 
 // Save the VM's booted state to improve startup next time.
-const saveState = (err, state) => {
+export const saveState = (err, state) => {
   const blob = new Blob([new Uint8Array(state)], {
     type: 'application/octet-stream',
   });
@@ -39,10 +39,4 @@ const saveState = (err, state) => {
     .open(vmStateCache)
     .then(cache => cache.put(request, response))
     .catch(err => console.error(err));
-};
-
-module.exports = {
-  getState,
-  hasState,
-  saveState
 };

@@ -1,8 +1,8 @@
 'use strict';
 
-const { fsRoot } = require('./config');
+import { fsRoot } from './config.js';
 
-function start() {
+export function start() {
   // Open a page to the nohost web server for this filesystem.  
   const iframe = document.querySelector('#nohost-server');
   const iframeWindow = iframe.contentWindow;
@@ -37,5 +37,3 @@ function start() {
 
   goHome();
 }
-
-module.exports.start = start;

@@ -1,16 +1,29 @@
 'use strict';
 
-const { fsRoot } = require('./config');
-const { fs, Path, Buffer } = require('filer');
-const sh = new fs.Shell();
-const dragDrop = require('drag-drop');
+import { fsRoot } from './config.js';
+import dragDrop from 'drag-drop';
+
+// Import filer as a global
+let fs, Path, Buffer, sh;
+
+// Initialize filer - note: this assumes filer is loaded globally
+// You may need to add a script tag for filer in index.html
+if (typeof window.Filer !== 'undefined') {
+  const Filer = window.Filer;
+  fs = new Filer.FileSystem();
+  Path = Filer.Path;
+  Buffer = Filer.Buffer;
+  sh = new fs.Shell();
+} else {
+  console.error('Filer library not loaded. Please ensure filer is available globally.');
+}
 
 // Expose fs on window for people to play on the console if they want
 window.fs = fs;
 // Use node's lowercase style `p` path
 window.path = Path;
 window.Buffer = Buffer;
-console.info('fs, path, and Buffer are all available on window for debugging, e.g., fs.stat(\'/\', console.log)');
+console.info('fs, path, and Buffer are all available on window for debugging, e.g., fs.stat(\'\/', console.log)');
 console.info('See https://github.com/filerjs/filer for docs.');
 console.info('use ?debug on the URL if you need Plan9/Filer debug info from v86');
 
@@ -58,7 +71,7 @@ window.addEventListener('DOMContentLoaded', function() {
 /**
  * Put some files in the filesystem on the first run
  */
-function install() {
+export function install() {
   const readme = `Welcome! Your files are located in /mnt and available at the URL /${fsRoot}`;
   fs.writeFile('/readme.txt', readme, (err) => {
     if(err) console.error('unable to write readme file!', err);
@@ -70,10 +83,4 @@ function install() {
   });
 }
 
-module.exports = {
-  install,
-  fs,
-  sh,
-  Path,
-  Buffer
-};
+export { fs, sh, Path, Buffer };
