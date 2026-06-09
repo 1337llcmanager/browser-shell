@@ -1,7 +1,7 @@
 'use strict';
 
-const server = require('./server');
-const terminal = require('./terminal');
+import { start as startServer } from './server.js';
+import { start as startTerminal } from './terminal.js';
 
-server.start();
-terminal.start();
+startServer();
+startTerminal();
